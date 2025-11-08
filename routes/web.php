@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,32 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+// Halaman login & register (guest only)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+// Dashboard (auth only)
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('user.dashboard');
+    })->name('user.dashboard');
+
+     Route::get('/transaksi', function () {
+        return view('user.transaksi'); // nanti bisa ganti view
+    })->name('user.transaksi');
+
+    Route::get('/kategori', function () {
+        return view('user.kategori'); // nanti bisa ganti view
+    })->name('user.kategori');
+
+    Route::get('/laporan', function () {
+        return view('user.laporan'); // nanti bisa ganti view
+    })->name('user.laporan');
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
