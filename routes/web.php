@@ -2,21 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IncomeController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
+
 // Halaman login & register (guest only)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,23 +22,33 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// Dashboard (auth only)
+// Dashboard & fitur lain (auth only)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
 
-     Route::get('/transaksi', function () {
-        return view('user.transaksi'); // nanti bisa ganti view
+    // Redirect /home ke dashboard
+    Route::get('/home', function () {
+        return redirect()->route('dashboard');
+    });
+
+    // Dashboard
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+
+    // Halaman lain
+    Route::get('/transaksi', function () {
+        return view('user.transaksi');
     })->name('user.transaksi');
 
     Route::get('/kategori', function () {
-        return view('user.kategori'); // nanti bisa ganti view
+        return view('user.kategori');
     })->name('user.kategori');
 
     Route::get('/laporan', function () {
-        return view('user.laporan'); // nanti bisa ganti view
+        return view('user.laporan');
     })->name('user.laporan');
 
+    // CRUD pemasukan
+    Route::resource('pemasukan', IncomeController::class);
+
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

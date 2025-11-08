@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Income;
+use App\Models\Category;
 
 class AuthController extends Controller
 {
@@ -50,7 +51,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            return redirect()->route('dashboard'); // redirect ke route dashboard
         }
 
         return back()->with('error', 'Email atau password salah.');
@@ -64,5 +65,19 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->with('success', 'Anda telah logout.');
+    }
+
+    // Dashboard
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        // Total pemasukan user
+        $totalIncome = Income::where('user_id', $user->id)->sum('jumlah');
+
+        // Ambil semua kategori untuk form input
+        $categories = Category::all();
+
+        return view('user.dashboard', compact('totalIncome', 'categories'));
     }
 }
