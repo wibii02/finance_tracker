@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Income;
+use App\Models\Expense;
 use App\Models\Category;
 
 class AuthController extends Controller
@@ -72,12 +73,29 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        // Total pemasukan user
+        // Total pemasukan
         $totalIncome = Income::where('user_id', $user->id)->sum('jumlah');
 
-        // Ambil semua kategori untuk form input
-        $categories = Category::all();
+        // Total pengeluaran
+        $totalExpense = Expense::where('user_id', $user->id)->sum('jumlah');
 
-        return view('user.dashboard', compact('totalIncome', 'categories'));
+        // Ambil kategori berdasarkan user & tipe
+        $categoriesIncome = Category::milikUser()
+            ->where('tipe', 'pemasukan')
+            ->orderBy('nama_kategori')
+            ->get();
+
+        $categoriesExpense = Category::milikUser()
+            ->where('tipe', 'pengeluaran')
+            ->orderBy('nama_kategori')
+            ->get();
+
+        return view('user.dashboard', compact(
+            'totalIncome',
+            'totalExpense',
+            'categoriesIncome',
+            'categoriesExpense'
+        ));
     }
+
 }

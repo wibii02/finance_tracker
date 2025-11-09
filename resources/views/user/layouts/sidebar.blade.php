@@ -19,7 +19,7 @@
             </a>
         </li>
 
-        {{-- Pemasukan (BARU DITAMBAH) --}}
+        {{-- Pemasukan --}}
         <li class="nav-item mb-1">
             <a href="{{ route('pemasukan.index') }}" 
                class="nav-link d-flex align-items-center {{ request()->routeIs('pemasukan.*') ? 'active' : 'text-dark' }}">
@@ -27,7 +27,7 @@
             </a>
         </li>
 
-        {{--  Pengeluaran --}}
+        {{-- Pengeluaran --}}
         <li class="nav-item mb-1">
             <a href="{{ route('pengeluaran.index') }}" 
             class="nav-link d-flex align-items-center {{ request()->routeIs('pengeluaran.*') ? 'active' : 'text-dark' }}">
@@ -35,29 +35,23 @@
             </a>
         </li>
 
-        {{-- Transaksi --}}
-        <li class="nav-item mb-1">
-            <a href="{{ route('user.transaksi') }}" 
-               class="nav-link d-flex align-items-center {{ request()->routeIs('user.transaksi') ? 'active' : 'text-dark' }}">
-                <i class="bi bi-wallet2 me-2"></i> Transaksi
-            </a>
-        </li>
-
+        
         {{-- Kategori --}}
         <li class="nav-item mb-1">
-            <a href="{{ route('user.kategori') }}" 
-               class="nav-link d-flex align-items-center {{ request()->routeIs('user.kategori') ? 'active' : 'text-dark' }}">
+            <a href="{{ route('kategori.index') }}" 
+            class="nav-link d-flex align-items-center {{ request()->routeIs('kategori.*') ? 'active' : 'text-dark' }}">
                 <i class="bi bi-tags me-2"></i> Kategori
             </a>
         </li>
 
+
         {{-- Laporan --}}
         <li class="nav-item mb-1">
-            <a href="{{ route('user.laporan') }}" 
-               class="nav-link d-flex align-items-center {{ request()->routeIs('user.laporan') ? 'active' : 'text-dark' }}">
+            <a href="{{ route('laporan.index') }}" class="nav-link {{ request()->routeIs('laporan.index') ? 'active' : 'text-dark' }}">
                 <i class="bi bi-bar-chart-line me-2"></i> Laporan
             </a>
         </li>
+
 
     </ul>
 

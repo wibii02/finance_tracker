@@ -33,6 +33,19 @@
                     required>
             </div>
 
+            {{-- Dropdown Kategori --}}
+            <div class="mb-3">
+                <label class="form-label">Kategori</label>
+                <select name="kategori_id" class="form-select" required>
+                    @foreach ($categoriesIncome as $cat)
+                        <option value="{{ $cat->id }}" 
+                            {{ $cat->id == $pemasukan->kategori_id ? 'selected' : '' }}>
+                            {{ $cat->nama_kategori }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Tanggal</label>
                 <input 

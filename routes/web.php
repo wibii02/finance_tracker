@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
-
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LaporanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,6 +53,12 @@ Route::middleware('auth')->group(function () {
 
     // CRUD pengeluaran
     Route::resource('pengeluaran', ExpenseController::class);
+
+    // CRUD Kategori
+    Route::resource('kategori', CategoryController::class);
+
+    // laporan keungan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

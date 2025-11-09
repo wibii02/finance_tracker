@@ -51,7 +51,7 @@
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand fw-bold" href="{{ route('user.dashboard') }}">
+            <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
                 <img src="{{ asset('logo.jpg') }}" alt="Logo" width="200" class="me-2">
             </a>
 

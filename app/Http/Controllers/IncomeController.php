@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Income;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IncomeController extends Controller
 {
-    // Tampilkan daftar pemasukan
     public function index()
     {
         $pemasukan = Income::where('user_id', Auth::id())
@@ -18,66 +18,75 @@ class IncomeController extends Controller
         return view('user.pemasukan.index', compact('pemasukan'));
     }
 
-    // Form tambah pemasukan
     public function create()
     {
-        return view('user.pemasukan.create');
+        // Ambil kategori pemasukan milik user
+        $categoriesIncome = Category::milikUser()
+            ->where('tipe', 'pemasukan')
+            ->orderBy('nama_kategori')
+            ->get();
+
+        return view('user.pemasukan.create', compact('categoriesIncome'));
     }
 
-    // Simpan pemasukan
     public function store(Request $request)
     {
         $request->validate([
-            'deskripsi' => 'required|string|max:255',
-            'jumlah'    => 'required',
-            'tanggal'   => 'required|date',
+            'deskripsi'   => 'required|string|max:255',
+            'jumlah'      => 'required',
+            'tanggal'     => 'required|date',
+            'kategori_id' => 'required|exists:categories,id',
         ]);
 
-        // Bersihkan angka
         $jumlah = (int) str_replace(['.', ','], '', $request->jumlah);
 
         Income::create([
-            'user_id'   => Auth::id(),
-            'deskripsi' => $request->deskripsi,
-            'jumlah'    => $jumlah,
-            'tanggal'   => $request->tanggal,
+            'user_id'     => Auth::id(),
+            'deskripsi'   => $request->deskripsi,
+            'jumlah'      => $jumlah,
+            'tanggal'     => $request->tanggal,
+            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('pemasukan.index')->with('success', 'Data pemasukan berhasil ditambahkan!');
     }
 
-    // Form edit
     public function edit($id)
     {
         $pemasukan = Income::where('user_id', Auth::id())->findOrFail($id);
 
-        return view('user.pemasukan.edit', compact('pemasukan'));
+        // Ambil kategori pemasukan
+        $categoriesIncome = Category::milikUser()
+            ->where('tipe', 'pemasukan')
+            ->orderBy('nama_kategori')
+            ->get();
+
+        return view('user.pemasukan.edit', compact('pemasukan', 'categoriesIncome'));
     }
 
-    // Update pemasukan
     public function update(Request $request, $id)
     {
         $request->validate([
-            'deskripsi' => 'required|string|max:255',
-            'jumlah'    => 'required',
-            'tanggal'   => 'required|date',
+            'deskripsi'   => 'required|string|max:255',
+            'jumlah'      => 'required',
+            'tanggal'     => 'required|date',
+            'kategori_id' => 'required|exists:categories,id',
         ]);
 
         $pemasukan = Income::where('user_id', Auth::id())->findOrFail($id);
 
-        // Bersihkan angka
         $jumlah = (int) str_replace(['.', ','], '', $request->jumlah);
 
         $pemasukan->update([
-            'deskripsi' => $request->deskripsi,
-            'jumlah'    => $jumlah,
-            'tanggal'   => $request->tanggal,
+            'deskripsi'   => $request->deskripsi,
+            'jumlah'      => $jumlah,
+            'tanggal'     => $request->tanggal,
+            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('pemasukan.index')->with('success', 'Data pemasukan berhasil diperbarui!');
     }
 
-    // Hapus pemasukan
     public function destroy($id)
     {
         $income = Income::where('user_id', Auth::id())->findOrFail($id);
