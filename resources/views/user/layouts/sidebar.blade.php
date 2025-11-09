@@ -27,6 +27,14 @@
             </a>
         </li>
 
+        {{--  Pengeluaran --}}
+        <li class="nav-item mb-1">
+            <a href="{{ route('pengeluaran.index') }}" 
+            class="nav-link d-flex align-items-center {{ request()->routeIs('pengeluaran.*') ? 'active' : 'text-dark' }}">
+                <i class="bi bi-cash me-2"></i> Pengeluaran
+            </a>
+        </li>
+
         {{-- Transaksi --}}
         <li class="nav-item mb-1">
             <a href="{{ route('user.transaksi') }}" 

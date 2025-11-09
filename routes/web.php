@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
 
 /*
@@ -48,6 +49,9 @@ Route::middleware('auth')->group(function () {
 
     // CRUD pemasukan
     Route::resource('pemasukan', IncomeController::class);
+
+    // CRUD pengeluaran
+    Route::resource('pengeluaran', ExpenseController::class);
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
