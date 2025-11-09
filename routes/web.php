@@ -6,11 +6,6 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LaporanController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -34,19 +29,6 @@ Route::middleware('auth')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-
-    // Halaman lain
-    Route::get('/transaksi', function () {
-        return view('user.transaksi');
-    })->name('user.transaksi');
-
-    Route::get('/kategori', function () {
-        return view('user.kategori');
-    })->name('user.kategori');
-
-    Route::get('/laporan', function () {
-        return view('user.laporan');
-    })->name('user.laporan');
 
     // CRUD pemasukan
     Route::resource('pemasukan', IncomeController::class);
